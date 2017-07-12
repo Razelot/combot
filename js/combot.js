@@ -4,6 +4,7 @@ var msg_stk = document.getElementById("msg_stk");
 var msg_btn = document.getElementById("msg_btn");
 
 var cmd_history = document.getElementById("cmd_history");
+var cmd_query = "";
 
 // Stick and Button mapping
 var stk_u = "w";
@@ -32,6 +33,22 @@ icon_filename["d/b"] = "stick_db.png";
 icon_filename["b"] = "stick_b.png";
 icon_filename["u/b"] = "stick_ub.png";
 
+icon_filename["1"] = "button_1.png";
+icon_filename["2"] = "button_2.png";
+icon_filename["3"] = "button_3.png";
+icon_filename["4"] = "button_4.png";
+icon_filename["1+2"] = "button_12.png";
+icon_filename["1+3"] = "button_13.png";
+icon_filename["1+4"] = "button_14.png";
+icon_filename["2+3"] = "button_23.png";
+icon_filename["2+4"] = "button_23.png";
+icon_filename["3+4"] = "button_34.png";
+icon_filename["1+2+3"] = "button_123.png";
+icon_filename["1+2+4"] = "button_124.png";
+icon_filename["1+3+4"] = "button_134.png";
+icon_filename["2+3+4"] = "button_234.png";
+icon_filename["1+2+3+4"] = "button_1234.png";
+
 var set_stk = function(stk) {
   cur_stk = stk;
   msg_stk.innerHTML = cur_stk;
@@ -49,27 +66,45 @@ var set_btn = function(btn) {
 
 var input_stk = function() {
   if(cur_stk != "n" && reg_stk_input && cur_btn == ""){
-    // cmd_history.innerHTML = cmd_history.innerHTML + cur_stk + " ";
-    var icon = document.createElement("img");
-    icon.classList.add("input-icon");
-    icon.src = "img/" + icon_filename[cur_stk];
-    cmd_history.appendChild(icon);
+    cmd_query = cmd_query + cur_stk + " ";
+    var stk_icon = document.createElement("img");
+    stk_icon.classList.add("input-icon");
+    stk_icon.style.marginRight = "16px";
+    stk_icon.src = "img/" + icon_filename[cur_stk];
+    cmd_history.appendChild(stk_icon);
   }
 }
 
-var input_btn = function(btn) {
+var input_btn = function() {
+  if(cur_btn == "") {
+    return
+  }
+  var btn_icon = document.createElement("img");
+  btn_icon.classList.add("input-icon");
+  btn_icon.style.marginRight = "16px";
+  btn_icon.src = "img/" + icon_filename[cur_btn];
   if(cur_stk == "n"){
-    // cmd_history.innerHTML = cmd_history.innerHTML + cur_btn + " ";
+    cmd_query = cmd_query + cur_btn + " ";
   } else {
-    // cmd_history.innerHTML = cmd_history.innerHTML + cur_stk+"+"+cur_btn + " ";
+    cmd_query = cmd_query + cur_stk+"+"+cur_btn + " ";
+    var stk_icon = document.createElement("img");
+    stk_icon.classList.add("input-icon");
+    stk_icon.src = "img/" + icon_filename[cur_stk];
+    cmd_history.appendChild(stk_icon);
     reg_stk_input = false;
   }
+  cmd_history.appendChild(btn_icon);
 }
 
 var reset = function() {
   set_stk("n");
   set_btn("");
-  cmd_history.innerHTML = "&nbsp;";
+
+  while (cmd_history.lastChild) {
+    cmd_history.removeChild(cmd_history.lastChild);
+  }
+  cmd_query = "";
+  cmd_history.innerHTML = "&nbsp;"; // placeholder
 }
 
 reset();
