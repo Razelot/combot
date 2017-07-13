@@ -1,9 +1,10 @@
 var listener = new window.keypress.Listener();
 
-var msg_stk = document.getElementById("msg_stk");
-var msg_btn = document.getElementById("msg_btn");
+var msg_stk = document.getElementById("msg-stk");
+var msg_btn = document.getElementById("msg-btn");
 
-var cmd_history = document.getElementById("cmd_history");
+var cmd_history = document.getElementById("cmd-history");
+var cmd_filter = document.getElementById("cmd-filter");
 var cmd_query = "";
 
 // Stick and Button mapping
@@ -22,40 +23,16 @@ var cur_btn = "";
 var reg_stk_input = true; // prevent directional input after a button press
 
 
-// Command input icon filename
-var icon_filename = {};
-icon_filename["u"] = "stick_u.png";
-icon_filename["u/f"] = "stick_uf.png";
-icon_filename["f"] = "stick_f.png";
-icon_filename["d/f"] = "stick_df.png";
-icon_filename["d"] = "stick_d.png";
-icon_filename["d/b"] = "stick_db.png";
-icon_filename["b"] = "stick_b.png";
-icon_filename["u/b"] = "stick_ub.png";
 
-icon_filename["1"] = "button_1.png";
-icon_filename["2"] = "button_2.png";
-icon_filename["3"] = "button_3.png";
-icon_filename["4"] = "button_4.png";
-icon_filename["1+2"] = "button_12.png";
-icon_filename["1+3"] = "button_13.png";
-icon_filename["1+4"] = "button_14.png";
-icon_filename["2+3"] = "button_23.png";
-icon_filename["2+4"] = "button_23.png";
-icon_filename["3+4"] = "button_34.png";
-icon_filename["1+2+3"] = "button_123.png";
-icon_filename["1+2+4"] = "button_124.png";
-icon_filename["1+3+4"] = "button_134.png";
-icon_filename["2+3+4"] = "button_234.png";
-icon_filename["1+2+3+4"] = "button_1234.png";
 
-var set_stk = function(stk) {
+
+function set_stk(stk) {
   cur_stk = stk;
   msg_stk.innerHTML = cur_stk;
   reg_stk_input = true;
 }
 
-var set_btn = function(btn) {
+function set_btn(btn) {
   cur_btn = btn;
   if(btn != ""){
     msg_btn.innerHTML = cur_btn;
@@ -64,39 +41,48 @@ var set_btn = function(btn) {
   }
 }
 
-var input_stk = function() {
+function input_stk() {
   if(cur_stk != "n" && reg_stk_input && cur_btn == ""){
     cmd_query = cmd_query + cur_stk + " ";
+    cmd_filter.value = cmd_query;
+
     var stk_icon = document.createElement("img");
     stk_icon.classList.add("input-icon");
-    stk_icon.style.marginRight = "16px";
-    stk_icon.src = "img/" + icon_filename[cur_stk];
+    stk_icon.style.marginRight = "8px";
+    stk_icon.src = "img/" + _ICON[cur_stk];
     cmd_history.appendChild(stk_icon);
+
+
+    table.column(0).search(regex_escape(cmd_query.trim()), true, false).draw();
   }
 }
 
-var input_btn = function() {
+function input_btn() {
   if(cur_btn == "") {
     return
   }
   var btn_icon = document.createElement("img");
   btn_icon.classList.add("input-icon");
-  btn_icon.style.marginRight = "16px";
-  btn_icon.src = "img/" + icon_filename[cur_btn];
+  btn_icon.style.marginRight = "8px";
+  btn_icon.src = "img/" + _ICON[cur_btn];
   if(cur_stk == "n"){
     cmd_query = cmd_query + cur_btn + " ";
   } else {
     cmd_query = cmd_query + cur_stk+"+"+cur_btn + " ";
     var stk_icon = document.createElement("img");
     stk_icon.classList.add("input-icon");
-    stk_icon.src = "img/" + icon_filename[cur_stk];
+    stk_icon.src = "img/" + _ICON[cur_stk];
     cmd_history.appendChild(stk_icon);
     reg_stk_input = false;
   }
   cmd_history.appendChild(btn_icon);
+
+  cmd_filter.value = cmd_query;
+
+  table.column(0).search(regex_escape(cmd_query.trim()), true, false).draw();
 }
 
-var reset = function() {
+function reset() {
   set_stk("n");
   set_btn("");
 
@@ -104,7 +90,11 @@ var reset = function() {
     cmd_history.removeChild(cmd_history.lastChild);
   }
   cmd_query = "";
+  cmd_filter.value = cmd_query;
+
   cmd_history.innerHTML = "&nbsp;"; // placeholder
+  table.column(0).search(regex_escape(cmd_query.trim()), true, false).draw();
+
 }
 
 reset();

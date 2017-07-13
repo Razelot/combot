@@ -1,9 +1,8 @@
 .input-icon {
-  width:32px;
-  height:32px;
+  width:16px;
+  height:16px;
 }
 
-.input-blank {
-	width: 32px;
-	height: 32px;
+#movelist-table {
+  text-align: left;
 }

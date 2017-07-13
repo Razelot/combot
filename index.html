@@ -8,7 +8,6 @@
 
     <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-" crossorigin="anonymous">
 
-
         <!--[if lte IE 8]>
             <link rel="stylesheet" href="css/layouts/side-menu-old-ie.css">
         <![endif]-->
@@ -16,7 +15,10 @@
             <link rel="stylesheet" href="css/layouts/side-menu.css">
         <!--<![endif]-->
 
-        <link rel="stylesheet" href="css/combot.css">
+    <link rel="stylesheet" href="css/combot.css">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.css"/>
+
 
 </head>
 <body>
@@ -54,31 +56,31 @@
         </div>
 
         <div class="content">
-            <h2 class="content-subhead">Stick position</h2>
-            <p id="msg_stk"></p>
+
+          <div class="pure-g">
+
+            <div class="pure-u-1-2">
+              <h2 class="content-subhead">Stick position</h2>
+              <p id="msg-stk"></p>
+            </div>
+
+            <div class="pure-u-1-2">
+              <h2 class="content-subhead">Button inputs</h2>
+              <p id="msg-btn"></p>
+            </div>
+
+          </div>
+
+          <h2 class="content-subhead" >Filter</h2>
+          <input  id="cmd-filter" type="text" autocomplete="off" readonly>
 
 
-            <h2 class="content-subhead">Button inputs</h2>
-            <p id="msg_btn"></p>
+          <h2 class="content-subhead">Command history</h2>
+          <div id="cmd-history"></div>
 
-            <h2 class="content-subhead">Command history</h2>
-            <!-- <p ></p> -->
-            <div id="cmd_history"></div>
+          <div id="movelist"></div>
 
-            <!-- <div class="pure-g">
-                <div class="pure-u-1-4">
-                    <img class="pure-img-responsive" src="http://farm3.staticflickr.com/2875/9069037713_1752f5daeb.jpg" alt="Peyto Lake">
-                </div>
-                <div class="pure-u-1-4">
-                    <img class="pure-img-responsive" src="http://farm3.staticflickr.com/2813/9069585985_80da8db54f.jpg" alt="Train">
-                </div>
-                <div class="pure-u-1-4">
-                    <img class="pure-img-responsive" src="http://farm6.staticflickr.com/5456/9121446012_c1640e42d0.jpg" alt="T-Shirt Store">
-                </div>
-                <div class="pure-u-1-4">
-                    <img class="pure-img-responsive" src="http://farm8.staticflickr.com/7357/9086701425_fda3024927.jpg" alt="Mountain">
-                </div>
-            </div> -->
+
 
         </div>
     </div>
@@ -87,8 +89,19 @@
 
 
 <script src="js/ui.js"></script>
+<!-- <script src="js/jquery-3.2.1.min.js"></script> -->
+<script
+  src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
+  crossorigin="anonymous"></script>
 <script src="js/keypress-2.1.4.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/movelist.js"></script>
+<script src="js/movelist_table.js"></script>
 <script src="js/combot.js"></script>
+
+
 
 </body>
 </html>
