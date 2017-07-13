@@ -1,4 +1,4 @@
-_MOVELIST = [
+_CMD_LIST = [
  {
    "Command": "in rage b+1+2",
    "Hit level": "m",

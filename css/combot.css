@@ -3,6 +3,10 @@
   height:16px;
 }
 
-#movelist-table {
+#cmd-table {
   text-align: left;
+}
+
+#cmd-filter {
+  width: 100%;
 }

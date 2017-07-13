@@ -1,59 +1,44 @@
-var listener = new window.keypress.Listener();
+var MSG_STK = document.getElementById("msg-stk");
+var MSG_BTN = document.getElementById("msg-btn");
 
-var msg_stk = document.getElementById("msg-stk");
-var msg_btn = document.getElementById("msg-btn");
+var CMD_HISTORY = document.getElementById("cmd-history");
+var CMD_FILTER = document.getElementById("cmd-filter");
 
-var cmd_history = document.getElementById("cmd-history");
-var cmd_filter = document.getElementById("cmd-filter");
 var cmd_query = "";
-
-// Stick and Button mapping
-var stk_u = "w";
-var stk_d = "s";
-var stk_b = "a";
-var stk_f = "d";
-
-var btn_1 = "y";
-var btn_2 = "u";
-var btn_3 = "h";
-var btn_4 = "j";
 
 var cur_stk = "n";
 var cur_btn = "";
 var reg_stk_input = true; // prevent directional input after a button press
 
 
-
-
-
 function set_stk(stk) {
   cur_stk = stk;
-  msg_stk.innerHTML = cur_stk;
+  MSG_STK.innerHTML = cur_stk;
   reg_stk_input = true;
 }
 
 function set_btn(btn) {
   cur_btn = btn;
   if(btn != ""){
-    msg_btn.innerHTML = cur_btn;
+    MSG_BTN.innerHTML = cur_btn;
   } else {
-    msg_btn.innerHTML = "&nbsp;";
+    MSG_BTN.innerHTML = "&nbsp;";
   }
 }
 
 function input_stk() {
   if(cur_stk != "n" && reg_stk_input && cur_btn == ""){
     cmd_query = cmd_query + cur_stk + " ";
-    cmd_filter.value = cmd_query;
+    CMD_FILTER.value = cmd_query;
 
     var stk_icon = document.createElement("img");
     stk_icon.classList.add("input-icon");
     stk_icon.style.marginRight = "8px";
     stk_icon.src = "img/" + _ICON[cur_stk];
-    cmd_history.appendChild(stk_icon);
+    CMD_HISTORY.appendChild(stk_icon);
 
 
-    table.column(0).search(regex_escape(cmd_query.trim()), true, false).draw();
+    table.column(0).search(regex_format(cmd_query.trim()), true, false).draw();
   }
 }
 
@@ -72,48 +57,62 @@ function input_btn() {
     var stk_icon = document.createElement("img");
     stk_icon.classList.add("input-icon");
     stk_icon.src = "img/" + _ICON[cur_stk];
-    cmd_history.appendChild(stk_icon);
+    CMD_HISTORY.appendChild(stk_icon);
     reg_stk_input = false;
   }
-  cmd_history.appendChild(btn_icon);
+  CMD_HISTORY.appendChild(btn_icon);
 
-  cmd_filter.value = cmd_query;
+  CMD_FILTER.value = cmd_query;
 
-  table.column(0).search(regex_escape(cmd_query.trim()), true, false).draw();
+  table.column(0).search(regex_format(cmd_query.trim()), true, false).draw();
 }
 
 function reset() {
   set_stk("n");
   set_btn("");
 
-  while (cmd_history.lastChild) {
-    cmd_history.removeChild(cmd_history.lastChild);
+  while (CMD_HISTORY.lastChild) {
+    CMD_HISTORY.removeChild(CMD_HISTORY.lastChild);
   }
   cmd_query = "";
-  cmd_filter.value = cmd_query;
+  CMD_FILTER.value = cmd_query;
 
-  cmd_history.innerHTML = "&nbsp;"; // placeholder
-  table.column(0).search(regex_escape(cmd_query.trim()), true, false).draw();
+  CMD_HISTORY.innerHTML = "&nbsp;"; // placeholder
+  table.column(0).search(regex_format(cmd_query.trim()), true, false).draw();
 
 }
 
 reset();
 
-var stick = listener.register_many([
+var listener = new window.keypress.Listener();
+
+// Key mapping
+var STK_u = "w";
+var STK_d = "s";
+var STK_b = "a";
+var STK_f = "d";
+
+var BTN_1 = "y";
+var BTN_2 = "u";
+var BTN_3 = "h";
+var BTN_4 = "j";
+
+// Stick inputs
+listener.register_many([
   {
-    "keys"          : [stk_u],
+    "keys"          : [STK_u],
     "prevent_repeat": true,
     "is_exclusive"  : true,
     "on_keydown"    : function() {
       set_stk("u");
     },
-    "on_keyup"      : function(e) {
+    "on_release"      : function(e) {
       input_stk();
       set_stk("n");
     }
   },
   {
-    "keys"          : [stk_u, stk_f],
+    "keys"          : [STK_u, STK_f],
     "prevent_repeat": true,
     "is_unordered"  : true,
     "is_exclusive"  : true,
@@ -121,25 +120,25 @@ var stick = listener.register_many([
     "on_keydown"    : function() {
       set_stk("u/f");
     },
-    "on_keyup"      : function(e) {
+    "on_release"      : function(e) {
       input_stk();
       set_stk("n");
     }
   },
   {
-    "keys"          : [stk_f],
+    "keys"          : [STK_f],
     "prevent_repeat": true,
     "is_exclusive"  : true,
     "on_keydown"    : function() {
       set_stk("f");
     },
-    "on_keyup"      : function(e) {
+    "on_release"      : function(e) {
       input_stk();
       set_stk("n");
     }
   },
   {
-    "keys"          : [stk_d, stk_f],
+    "keys"          : [STK_d, STK_f],
     "prevent_repeat": true,
     "is_unordered"  : true,
     "is_exclusive"  : true,
@@ -147,25 +146,25 @@ var stick = listener.register_many([
     "on_keydown"    : function() {
       set_stk("d/f");
     },
-    "on_keyup"      : function(e) {
+    "on_release"      : function(e) {
       input_stk();
       set_stk("n");
     }
   },
   {
-    "keys"          : [stk_d],
+    "keys"          : [STK_d],
     "prevent_repeat": true,
     "is_exclusive"  : true,
     "on_keydown"    : function() {
       set_stk("d");
     },
-    "on_keyup"      : function(e) {
+    "on_release"      : function(e) {
       input_stk();
       set_stk("n");
     }
   },
   {
-    "keys"          : [stk_d, stk_b],
+    "keys"          : [STK_d, STK_b],
     "prevent_repeat": true,
     "is_unordered"  : true,
     "is_exclusive"  : true,
@@ -173,25 +172,25 @@ var stick = listener.register_many([
     "on_keydown"    : function() {
       set_stk("d/b");
     },
-    "on_keyup"      : function(e) {
+    "on_release"      : function(e) {
       input_stk();
       set_stk("n");
     }
   },
   {
-    "keys"          : [stk_b],
+    "keys"          : [STK_b],
     "prevent_repeat": true,
     "is_exclusive"  : true,
     "on_keydown"    : function() {
       set_stk("b");
     },
-    "on_keyup"      : function(e) {
+    "on_release"      : function(e) {
       input_stk();
       set_stk("n");
     }
   },
   {
-    "keys"          : [stk_u, stk_b],
+    "keys"          : [STK_u, STK_b],
     "prevent_repeat": true,
     "is_unordered"  : true,
     "is_exclusive"  : true,
@@ -199,64 +198,65 @@ var stick = listener.register_many([
     "on_keydown"    : function() {
       set_stk("u/b");
     },
-    "on_keyup"      : function(e) {
+    "on_release"      : function(e) {
       input_stk();
       set_stk("n");
     }
   }
 ]);
 
-var button = listener.register_many([
+// Button inputs
+listener.register_many([
   {
-    "keys"          : [btn_1],
+    "keys"          : [BTN_1],
     "prevent_repeat": true,
     "is_exclusive"  : true,
     "on_keydown"    : function() {
       set_btn("1");
     },
-    "on_keyup"      : function(e) {
+    "on_release"      : function(e) {
       input_btn();
       set_btn("");
     }
   },
   {
-    "keys"          : [btn_2],
+    "keys"          : [BTN_2],
     "prevent_repeat": true,
     "is_exclusive"  : true,
     "on_keydown"    : function() {
       set_btn("2");
     },
-    "on_keyup"      : function(e) {
+    "on_release"      : function(e) {
       input_btn();
       set_btn("");
     }
   },
   {
-    "keys"          : [btn_3],
+    "keys"          : [BTN_3],
     "prevent_repeat": true,
     "is_exclusive"  : true,
     "on_keydown"    : function() {
       set_btn("3");
     },
-    "on_keyup"      : function(e) {
+    "on_release"      : function(e) {
       input_btn();
       set_btn("");
     }
   },
   {
-    "keys"          : [btn_4],
+    "keys"          : [BTN_4],
     "prevent_repeat": true,
     "is_exclusive"  : true,
     "on_keydown"    : function() {
       set_btn("4");
     },
-    "on_keyup"      : function(e) {
+    "on_release"      : function(e) {
       input_btn();
       set_btn("");
     }
   },
   {
-    "keys"          : [btn_1, btn_2],
+    "keys"          : [BTN_1, BTN_2],
     "prevent_repeat": true,
     "is_unordered"  : true,
     "is_exclusive"  : true,
@@ -264,13 +264,13 @@ var button = listener.register_many([
     "on_keydown"    : function() {
       set_btn("1+2");
     },
-    "on_keyup"      : function(e) {
+    "on_release"      : function(e) {
       input_btn();
       set_btn("");
     }
   },
   {
-    "keys"          : [btn_1, btn_3],
+    "keys"          : [BTN_1, BTN_3],
     "prevent_repeat": true,
     "is_unordered"  : true,
     "is_exclusive"  : true,
@@ -278,13 +278,13 @@ var button = listener.register_many([
     "on_keydown"    : function() {
       set_btn("1+3");
     },
-    "on_keyup"      : function(e) {
+    "on_release"      : function(e) {
       input_btn();
       set_btn("");
     }
   },
   {
-    "keys"          : [btn_1, btn_4],
+    "keys"          : [BTN_1, BTN_4],
     "prevent_repeat": true,
     "is_unordered"  : true,
     "is_exclusive"  : true,
@@ -292,13 +292,13 @@ var button = listener.register_many([
     "on_keydown"    : function() {
       set_btn("1+4");
     },
-    "on_keyup"      : function(e) {
+    "on_release"      : function(e) {
       input_btn();
       set_btn("");
     }
   },
   {
-    "keys"          : [btn_2, btn_3],
+    "keys"          : [BTN_2, BTN_3],
     "prevent_repeat": true,
     "is_unordered"  : true,
     "is_exclusive"  : true,
@@ -306,13 +306,13 @@ var button = listener.register_many([
     "on_keydown"    : function() {
       set_btn("2+3");
     },
-    "on_keyup"      : function(e) {
+    "on_release"      : function(e) {
       input_btn();
       set_btn("");
     }
   },
   {
-    "keys"          : [btn_2, btn_4],
+    "keys"          : [BTN_2, BTN_4],
     "prevent_repeat": true,
     "is_unordered"  : true,
     "is_exclusive"  : true,
@@ -320,13 +320,13 @@ var button = listener.register_many([
     "on_keydown"    : function() {
       set_btn("2+4");
     },
-    "on_keyup"      : function(e) {
+    "on_release"      : function(e) {
       input_btn();
       set_btn("");
     }
   },
   {
-    "keys"          : [btn_3, btn_4],
+    "keys"          : [BTN_3, BTN_4],
     "prevent_repeat": true,
     "is_unordered"  : true,
     "is_exclusive"  : true,
@@ -334,13 +334,13 @@ var button = listener.register_many([
     "on_keydown"    : function() {
       set_btn("3+4");
     },
-    "on_keyup"      : function(e) {
+    "on_release"      : function(e) {
       input_btn();
       set_btn("");
     }
   },
   {
-    "keys"          : [btn_1, btn_2, btn_3],
+    "keys"          : [BTN_1, BTN_2, BTN_3],
     "prevent_repeat": true,
     "is_unordered"  : true,
     "is_exclusive"  : true,
@@ -348,13 +348,13 @@ var button = listener.register_many([
     "on_keydown"    : function() {
       set_btn("1+2+3");
     },
-    "on_keyup"      : function(e) {
+    "on_release"      : function(e) {
       input_btn();
       set_btn("");
     }
   },
   {
-    "keys"          : [btn_1, btn_2, btn_4],
+    "keys"          : [BTN_1, BTN_2, BTN_4],
     "prevent_repeat": true,
     "is_unordered"  : true,
     "is_exclusive"  : true,
@@ -362,13 +362,13 @@ var button = listener.register_many([
     "on_keydown"    : function() {
       set_btn("1+2+4");
     },
-    "on_keyup"      : function(e) {
+    "on_release"      : function(e) {
       input_btn();
       set_btn("");
     }
   },
   {
-    "keys"          : [btn_1, btn_3, btn_4],
+    "keys"          : [BTN_1, BTN_3, BTN_4],
     "prevent_repeat": true,
     "is_unordered"  : true,
     "is_exclusive"  : true,
@@ -376,13 +376,13 @@ var button = listener.register_many([
     "on_keydown"    : function() {
       set_btn("1+3+4");
     },
-    "on_keyup"      : function(e) {
+    "on_release"      : function(e) {
       input_btn();
       set_btn("");
     }
   },
   {
-    "keys"          : [btn_2, btn_3, btn_4],
+    "keys"          : [BTN_2, BTN_3, BTN_4],
     "prevent_repeat": true,
     "is_unordered"  : true,
     "is_exclusive"  : true,
@@ -390,13 +390,13 @@ var button = listener.register_many([
     "on_keydown"    : function() {
       set_btn("2+3+4");
     },
-    "on_keyup"      : function(e) {
+    "on_release"      : function(e) {
       input_btn();
       set_btn("");
     }
   },
   {
-    "keys"          : [btn_1, btn_2, btn_3, btn_4],
+    "keys"          : [BTN_1, BTN_2, BTN_3, BTN_4],
     "prevent_repeat": true,
     "is_unordered"  : true,
     "is_exclusive"  : true,
@@ -404,14 +404,14 @@ var button = listener.register_many([
     "on_keydown"    : function() {
       set_btn("1+2+3+4");
     },
-    "on_keyup"      : function(e) {
+    "on_release"      : function(e) {
       input_btn();
       set_btn("");
     }
   }
 ]);
 
-// Clear inputs
+// Other inputs
 listener.simple_combo("r", function() {
   reset();
 });
