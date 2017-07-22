@@ -24,19 +24,21 @@ function regex_format(str) {
   }
   // Filter from beginning of string
   var escaped =  str.replace(new RegExp('[.\\\\+*?\\[\\^\\]$(){}=!<>|:\\-]', 'g'), '\\$&');
-  return "^" + escaped + "(\\s|$|\\*)";
+  // return "^" + escaped + "(\\s|$|\\*)"; // query from begining of string
+  return escaped + "(\\s|$|\\*)";
+
 }
 
 
 function generate_menu() {
   // Side menu links
-  for(var i=0;i<_CHARACTERS.length;i++){
-    var character = _CHARACTERS[i];
+  for(var character in _CMD_LIST){
+    // var character = key;
     var li = $("<li/>");
     li.addClass("pure-menu-item");
     var a = document.createElement("a");
     a.classList.add("pure-menu-link");
-    a.innerHTML = _CHARACTERS[i];
+    a.innerHTML = character;
     a.href = "?character=" + character;
     li.append(a);
     $("#char-menu").append(li);
@@ -44,19 +46,18 @@ function generate_menu() {
 
 }
 
-function generate_table(character) {
+function generate_table(char) {
   var th1 = "<th>Command</th>";
   var th2 = "<th>Damage</th>";
   var th3 = "<th>Block frame</th>";
 
-
   $("#cmd-table").find("thead").append("<tr>"+th1+th2+th3+"</tr>");
 
-  for(var i=0;i<_CMD_LIST.length;i++)
+  for(var i=0;i<_CMD_LIST[char].length;i++)
   {
-    var td1 = "<td>"+ command_format(_CMD_LIST[i]["Command"]) +"</td>";
-    var td2 = "<td>"+_CMD_LIST[i]["Damage"]+"</td>";
-    var td3 = "<td>"+_CMD_LIST[i]["Block frame"]+"</td>";
+    var td1 = "<td>"+ command_format(_CMD_LIST[char][i]["Command"]) +"</td>";
+    var td2 = "<td>"+_CMD_LIST[char][i]["Damage"]+"</td>";
+    var td3 = "<td>"+_CMD_LIST[char][i]["Block frame"]+"</td>";
 
     $("#cmd-table").find("tbody").append("<tr>"+td1+td2+td3+"</tr>");
   }

@@ -34,18 +34,11 @@
 
     <div id="menu">
         <div class="pure-menu">
-            <a class="pure-menu-heading" href="#">Characters</a>
+            <a class="pure-menu-heading" href="index.html">Characters</a>
 
             <ul id="char-menu" class="pure-menu-list">
-                <!-- <li class="pure-menu-item"><a href="#" class="pure-menu-link">Alisa</a></li>
-                <li class="pure-menu-item"><a href="#" class="pure-menu-link">Bryan</a></li>
-                <li class="pure-menu-item"><a href="#" class="pure-menu-link">Lars</a></li>
-
-                <li class="pure-menu-item" class="menu-item-divided pure-menu-selected">
-                  <a href="#" class="pure-menu-link">Yoshimitsu</a>
-                </li> -->
-
             </ul>
+
         </div>
     </div>
 
@@ -74,9 +67,10 @@
           <h2 class="content-subhead" >Command filter</h2>
           <input  id="cmd-filter" type="text" autocomplete="off" readonly>
 
-
           <h2 class="content-subhead">Command history</h2>
           <div id="cmd-history"></div>
+
+          <div id="result" style="color:red"></div>
 
           <table id="cmd-table">
             <thead></thead>
@@ -115,13 +109,15 @@ function urlParam(param){
 
 var cur_char = urlParam('character');
 
-
 $(document).ready(function() {
   generate_menu();
-  generate_table();
-  input_reset();
-  console.log(cur_char);
+  if(cur_char!=null){
+    generate_table(cur_char);
+    set_listener();
+    input_reset();
+  }
 });
+
 </script>
 
 
