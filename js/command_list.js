@@ -1,3 +1,5 @@
+_CHARACTERS = ["Akuma", "Alisa", "Jin", "Kuma", "Yoshimitsu"];
+
 _CMD_LIST = [
  {
    "Command": "in rage b+1+2",

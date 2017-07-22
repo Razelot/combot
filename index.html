@@ -36,14 +36,14 @@
         <div class="pure-menu">
             <a class="pure-menu-heading" href="#">Characters</a>
 
-            <ul class="pure-menu-list">
-                <li class="pure-menu-item"><a href="#" class="pure-menu-link">Alisa</a></li>
+            <ul id="char-menu" class="pure-menu-list">
+                <!-- <li class="pure-menu-item"><a href="#" class="pure-menu-link">Alisa</a></li>
                 <li class="pure-menu-item"><a href="#" class="pure-menu-link">Bryan</a></li>
                 <li class="pure-menu-item"><a href="#" class="pure-menu-link">Lars</a></li>
 
                 <li class="pure-menu-item" class="menu-item-divided pure-menu-selected">
                   <a href="#" class="pure-menu-link">Yoshimitsu</a>
-                </li>
+                </li> -->
 
             </ul>
         </div>
@@ -78,15 +78,14 @@
           <h2 class="content-subhead">Command history</h2>
           <div id="cmd-history"></div>
 
-          <div id="cmd-list"></div>
-
-
+          <table id="cmd-table">
+            <thead></thead>
+            <tbody></tbody>
+          </table>
 
         </div>
     </div>
 </div>
-
-
 
 <script src="js/ui.js"></script>
 <!-- <script src="js/jquery-3.2.1.min.js"></script> -->
@@ -100,6 +99,30 @@
 <script src="js/command_list.js"></script>
 <script src="js/command_table.js"></script>
 <script src="js/combot.js"></script>
+
+
+<script type="text/javascript">
+function urlParam(param){
+  var results = decodeURI(window.location.href);
+  results = new RegExp('[\?&]' + param + '=([^&#]*)').exec(results);
+  if (results == null) {
+    return null;
+  }
+  else {
+    return results[1] || 0;
+  }
+}
+
+var cur_char = urlParam('character');
+
+
+$(document).ready(function() {
+  generate_menu();
+  generate_table();
+  input_reset();
+  console.log(cur_char);
+});
+</script>
 
 
 

@@ -1,13 +1,3 @@
-var tbl = $("<table/>").attr("id","cmd-table");
-
-$("#cmd-list").append(tbl);
-
-
-var th1 = "<th>Command</th>";
-var th2 = "<th>Damage</th>";
-var th3 = "<th>Block frame</th>";
-
-
 function command_format(command){
   //return command
 
@@ -19,8 +9,8 @@ function command_format(command){
   // TODO
   var stances = ["FC", "WS", "SS"];
   re = new RegExp("(FC\\+|WS\\+|SS\\+)", 'g');
-  
-  return cmd.replace(re, '');
+
+  return cmd
   //
   // for(){
   //
@@ -38,29 +28,47 @@ function regex_format(str) {
 }
 
 
-$("#cmd-table").append("<thead><tr>"+th1+th2+th3+"</tr></thead>");
+function generate_menu() {
+  // Side menu links
+  for(var i=0;i<_CHARACTERS.length;i++){
+    var character = _CHARACTERS[i];
+    var li = $("<li/>");
+    li.addClass("pure-menu-item");
+    var a = document.createElement("a");
+    a.classList.add("pure-menu-link");
+    a.innerHTML = _CHARACTERS[i];
+    a.href = "?character=" + character;
+    li.append(a);
+    $("#char-menu").append(li);
+  }
 
-$("#cmd-table").append("<tbody>");
-
-for(var i=0;i<_CMD_LIST.length;i++)
-{
-  var td1 = "<td>"+ command_format(_CMD_LIST[i]["Command"]) +"</td>";
-  var td2 = "<td>"+_CMD_LIST[i]["Damage"]+"</td>";
-  var td3 = "<td>"+_CMD_LIST[i]["Block frame"]+"</td>";
-
-  $("#cmd-table").append("<tr>"+td1+td2+td3+"</tr>");
 }
 
-$("#cmd-table").append("</tbody>")
+function generate_table(character) {
+  var th1 = "<th>Command</th>";
+  var th2 = "<th>Damage</th>";
+  var th3 = "<th>Block frame</th>";
 
 
-var table = $('#cmd-table').DataTable({
-  "bSort" : false,
-  "paging": false,
-  "info": false,
-  "dom": 'lrtp'
-});
+  $("#cmd-table").find("thead").append("<tr>"+th1+th2+th3+"</tr>");
 
+  for(var i=0;i<_CMD_LIST.length;i++)
+  {
+    var td1 = "<td>"+ command_format(_CMD_LIST[i]["Command"]) +"</td>";
+    var td2 = "<td>"+_CMD_LIST[i]["Damage"]+"</td>";
+    var td3 = "<td>"+_CMD_LIST[i]["Block frame"]+"</td>";
+
+    $("#cmd-table").find("tbody").append("<tr>"+td1+td2+td3+"</tr>");
+  }
+
+  cmd_table = $('#cmd-table').DataTable({
+    "bSort" : false,
+    "paging": false,
+    "info": false,
+    "dom": 'lrtp'
+  });
+
+}
 
 
 // $('#cmd-filter').keyup(function(){

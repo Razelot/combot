@@ -1,44 +1,48 @@
-var MSG_STK = document.getElementById("msg-stk");
-var MSG_BTN = document.getElementById("msg-btn");
-
-var CMD_HISTORY = document.getElementById("cmd-history");
-var CMD_FILTER = document.getElementById("cmd-filter");
-
 var cmd_query = "";
 
 var cur_stk = "n";
 var cur_btn = "";
 var reg_stk_input = true; // prevent directional input after a button press
 
+// Key mapping
+var STK_u = "w";
+var STK_d = "s";
+var STK_b = "a";
+var STK_f = "d";
+
+var BTN_1 = "y";
+var BTN_2 = "u";
+var BTN_3 = "h";
+var BTN_4 = "j";
+
 
 function set_stk(stk) {
   cur_stk = stk;
-  MSG_STK.innerHTML = cur_stk;
+  $("#msg-stk").html(cur_stk);
   reg_stk_input = true;
 }
 
 function set_btn(btn) {
   cur_btn = btn;
   if(btn != ""){
-    MSG_BTN.innerHTML = cur_btn;
+    $("#msg-btn").html(cur_btn);
   } else {
-    MSG_BTN.innerHTML = "&nbsp;";
+    $("#msg-btn").html("");
   }
 }
 
 function input_stk() {
   if(cur_stk != "n" && reg_stk_input && cur_btn == ""){
     cmd_query = cmd_query + cur_stk + " ";
-    CMD_FILTER.value = cmd_query;
+    $("#cmd-filter").val(cmd_query);
 
     var stk_icon = document.createElement("img");
     stk_icon.classList.add("input-icon");
     stk_icon.style.marginRight = "8px";
     stk_icon.src = "img/" + _ICON[cur_stk];
-    CMD_HISTORY.appendChild(stk_icon);
-
-
-    table.column(0).search(regex_format(cmd_query.trim()), true, false).draw();
+    
+    $("#cmd-history").append(stk_icon);
+    cmd_table.column(0).search(regex_format(cmd_query.trim()), true, false).draw();
   }
 }
 
@@ -57,45 +61,29 @@ function input_btn() {
     var stk_icon = document.createElement("img");
     stk_icon.classList.add("input-icon");
     stk_icon.src = "img/" + _ICON[cur_stk];
-    CMD_HISTORY.appendChild(stk_icon);
+    $("#cmd-history").append(stk_icon);
     reg_stk_input = false;
   }
-  CMD_HISTORY.appendChild(btn_icon);
+  $("#cmd-history").append(btn_icon);
+  $("#cmd-filter").val(cmd_query);
 
-  CMD_FILTER.value = cmd_query;
-
-  table.column(0).search(regex_format(cmd_query.trim()), true, false).draw();
+  cmd_table.column(0).search(regex_format(cmd_query.trim()), true, false).draw();
 }
 
-function reset() {
+function input_reset() {
   set_stk("n");
   set_btn("");
-
-  while (CMD_HISTORY.lastChild) {
-    CMD_HISTORY.removeChild(CMD_HISTORY.lastChild);
-  }
   cmd_query = "";
-  CMD_FILTER.value = cmd_query;
 
-  CMD_HISTORY.innerHTML = "&nbsp;"; // placeholder
-  table.column(0).search(regex_format(cmd_query.trim()), true, false).draw();
+  $("#cmd-history").empty();
+  $("#cmd-filter").val(cmd_query);
+
+  $("#cmd-filter").val("");
+  cmd_table.column(0).search(regex_format(cmd_query.trim()), true, false).draw();
 
 }
 
-reset();
-
 var listener = new window.keypress.Listener();
-
-// Key mapping
-var STK_u = "w";
-var STK_d = "s";
-var STK_b = "a";
-var STK_f = "d";
-
-var BTN_1 = "y";
-var BTN_2 = "u";
-var BTN_3 = "h";
-var BTN_4 = "j";
 
 // Stick inputs
 listener.register_many([
@@ -413,5 +401,5 @@ listener.register_many([
 
 // Other inputs
 listener.simple_combo("r", function() {
-  reset();
+  input_reset();
 });
