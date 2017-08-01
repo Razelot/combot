@@ -1741,16 +1741,6 @@ _CMD_LIST = {
       "Notes": ""
     },
     {
-      "Command": "Command",
-      "Hit level": "Hit level",
-      "Damage": "Damage",
-      "Start up frame": "Start up frame",
-      "Block frame": "Block frame",
-      "Hit frame": "Hit frame",
-      "Counter hit frame": "Counter hit frame",
-      "Notes": "Notes"
-    },
-    {
       "Command": "1",
       "Hit level": "h",
       "Damage": "7",
@@ -5161,16 +5151,6 @@ _CMD_LIST = {
       "Hit frame": "KND",
       "Counter hit frame": "KND",
       "Notes": ""
-    },
-    {
-      "Command": "Command",
-      "Hit level": "Hit level",
-      "Damage": "Damage",
-      "Start up frame": "Start up frame",
-      "Block frame": "Block frame",
-      "Hit frame": "Hit frame",
-      "Counter hit frame": "Counter hit frame",
-      "Notes": "Notes"
     },
     {
       "Command": "1",

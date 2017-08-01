@@ -69,9 +69,8 @@ function generate_table(char) {
     "dom": 'lrtp'
   });
 
+  // Search by directly typing to the input box
+  $('#cmd-filter').keyup(function(){
+    cmd_table.column(0).search(regex_format($(this).val().trim()), true, false).draw();
+  });
 }
-
-
-// $('#cmd-filter').keyup(function(){
-//   table.column(0).search($(this).val().trim(), true, false).draw();
-// });

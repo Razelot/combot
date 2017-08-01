@@ -77,7 +77,10 @@ function input_btn() {
 }
 
 function set_listener() {
-  listener = new window.keypress.Listener($("#cmd-filter")[0],{});
+  listener = new window.keypress.Listener();
+  $('input[type=text]')
+    .bind("focus", function() { listener.stop_listening(); })
+    .bind("blur", function() { listener.listen(); });
 
   // Stick inputs
   listener.register_many([
